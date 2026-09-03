@@ -44,7 +44,7 @@ def model_evaluate(x_train, y_train, x_test, y_test, models: dict) -> dict:
 def load_yaml(file_path: str) -> dict:
     try:
         with open(file_path, "r") as f:
-            return yaml.safe_load(f) or {}
+            return yaml.safe_load(f) 
     except Exception as e:
         raise CustomException(e, sys)
 

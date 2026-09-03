@@ -170,11 +170,10 @@ cython_debug/
 # PyPI configuration file
 .pypirc
 
-# Project-specific: generated pipeline outputs, never hand-authored
+# Project-specific: generated pipeline outputs, never hand-authored.
+# data/ itself is NOT ignored - it holds the tracked raw source dataset.
 artifacts/
 logs/
-data/train_data.csv
-data/test_data.csv
 *.pkl
 
 # Batch prediction outputs

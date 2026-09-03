@@ -93,6 +93,14 @@ class FeatureEngineering(BaseEstimator, TransformerMixin):
     def fit(self, X, y=None):
         return self
 
+    def __sklearn_is_fitted__(self) -> bool:
+        # Stateless transformer: it recomputes features from each input batch
+        # rather than learning parameters from training data, so it's always
+        # ready to transform. Without this, sklearn's check_is_fitted() can't
+        # tell fitted apart from never-fitted (it looks for a trailing-"_"
+        # attribute set by fit()) and warns on every .transform() call.
+        return True
+
     def transform(self, X: pd.DataFrame, y=None) -> pd.DataFrame:
         try:
             return self.transform_feature(X)

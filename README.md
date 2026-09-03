@@ -34,7 +34,7 @@ moduler-project/
 │   └── config.yml             # Split ratios, random seeds
 │
 ├── data/
-│   └── finalTrain.csv         # Source dataset
+│   └── finalTrain.csv         # Source dataset — the ONLY thing tracked here, nothing generated
 │
 ├── batch_prediction/
 │   └── predict.py             # CLI: score a CSV of records with the trained model
@@ -44,7 +44,15 @@ moduler-project/
 │
 ├── tests/                     # pytest unit tests
 │
-├── artifacts/                 # Generated at runtime (models, transformed data) — gitignored
+├── artifacts/                  # Everything generated at runtime — gitignored
+│   ├── data_ingestion/<timestamp>/
+│   │   ├── raw_data/raw.csv           # snapshot of finalTrain.csv for this run
+│   │   └── ingested_data/{train,test}.csv   # raw train/test split
+│   ├── data_transformation/
+│   │   ├── feature_engineered_data/{train,test}.csv  # readable, feeds app.py's dropdowns
+│   │   ├── transformed_data/{train,test}.csv         # scaled numeric arrays fed to the model
+│   │   └── processor/{processor,feature_engineering}.pkl
+│   └── model_trainer/trained_model.pkl
 │
 └── src/
     ├── components/            # One file per pipeline stage
@@ -106,7 +114,7 @@ uv run python main.py
 Scores a CSV (defaults to the held-out test split produced by training):
 
 ```bash
-uv run python batch_prediction/predict.py --input data/test_data.csv --output batch_prediction/predictions.csv
+uv run python batch_prediction/predict.py --input artifacts/data_transformation/feature_engineered_data/test.csv --output batch_prediction/predictions.csv
 ```
 
 ### 🌐 Launch the Streamlit app

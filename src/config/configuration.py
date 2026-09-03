@@ -9,6 +9,7 @@ from src.constants import (
     DATA_PROCESSOR_DIR,
     DATA_PROCESSOR_FILE_NAME,
     DATA_TRANSFORMATION_ARTIFACT_DIR,
+    FEATURE_ENGINEERED_DATA_DIR,
     FEATURE_ENGINEERING_FILE_NAME,
     INGESTED_DATA_DIR,
     MODEL_TRAINER_ARTIFACT_DIR,
@@ -47,9 +48,14 @@ PREPROCESSED_TEST_DATA_PATH = os.path.join(
 )
 
 # feature-engineered (but not yet scaled) tables the Streamlit app reads to
-# populate its dropdown options.
-FEATURE_ENGINEERED_TRAIN_DATA_PATH = os.path.join(ROOT_DIR, DATA_DIR, "train_data.csv")
-FEATURE_ENGINEERED_TEST_DATA_PATH = os.path.join(ROOT_DIR, DATA_DIR, "test_data.csv")
+# populate its dropdown options. Generated output, so it lives under
+# artifacts/ rather than data/ - data/ holds only the raw source file.
+FEATURE_ENGINEERED_TRAIN_DATA_PATH = os.path.join(
+    ROOT_DIR, ARTIFACT_DIR, DATA_TRANSFORMATION_ARTIFACT_DIR, FEATURE_ENGINEERED_DATA_DIR, TRAIN_DATA_FILE_NAME
+)
+FEATURE_ENGINEERED_TEST_DATA_PATH = os.path.join(
+    ROOT_DIR, ARTIFACT_DIR, DATA_TRANSFORMATION_ARTIFACT_DIR, FEATURE_ENGINEERED_DATA_DIR, TEST_DATA_FILE_NAME
+)
 
 # model trainer
 MODEL_TRAINER_PATH = os.path.join(ROOT_DIR, ARTIFACT_DIR, MODEL_TRAINER_ARTIFACT_DIR, MODEL_TRAINER_FILE_NAME)
