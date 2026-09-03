@@ -26,9 +26,8 @@ moduler-project/
 │
 ├── app.py                     # Streamlit app entry point
 ├── main.py                    # Runs the training pipeline end-to-end
-├── setup.py                   # Packaging (makes `src` importable as `pip install -e .`)
-├── requirements.txt           # Runtime dependencies
-├── requirements-dev.txt       # + test dependencies
+├── pyproject.toml             # Packaging + dependencies (single source of truth, managed by uv)
+├── uv.lock                    # Locked, reproducible dependency versions
 ├── schema.yml                 # Expected raw-data columns, checked at ingestion time
 │
 ├── config/
@@ -85,11 +84,13 @@ Two intentional exceptions: `CustomData`'s constructor arguments and the feature
 
 ## 🛠️ How to Run
 
+Dependencies and the virtual environment are managed with [uv](https://docs.astral.sh/uv/); everything
+in `pyproject.toml` is the single source of truth (no separate `requirements.txt`).
+
 ### 🔧 Install dependencies
 
 ```bash
-python -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
+uv sync --group dev
 ```
 
 ### 🚦 Train the model
@@ -97,7 +98,7 @@ pip install -r requirements.txt
 Runs ingestion → transformation → training, and writes artifacts under `artifacts/`:
 
 ```bash
-python main.py
+uv run python main.py
 ```
 
 ### 🧪 Run batch predictions
@@ -105,23 +106,25 @@ python main.py
 Scores a CSV (defaults to the held-out test split produced by training):
 
 ```bash
-python batch_prediction/predict.py --input data/test_data.csv --output batch_prediction/predictions.csv
+uv run python batch_prediction/predict.py --input data/test_data.csv --output batch_prediction/predictions.csv
 ```
 
 ### 🌐 Launch the Streamlit app
 
-Requires a trained model (run `python main.py` first):
+Requires a trained model (run `uv run python main.py` first):
 
 ```bash
-streamlit run app.py
+uv run streamlit run app.py
 ```
 
 ### ✅ Run tests
 
 ```bash
-pip install -r requirements-dev.txt
-pytest
+uv run pytest
 ```
+
+Without uv, `pip install -e .` (runtime) or `pip install -e ".[dev]"`-style extras aren't set up here —
+use `pip install .` then `pip install pytest` for an equivalent pip-only environment.
 
 ---
 
