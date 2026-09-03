@@ -1,35 +1,35 @@
-from setuptools import setup, find_packages
 from typing import List
 
-requirements_path= "requirements.txt"
-Hyphen_e_dot= "-e ."
+from setuptools import find_packages, setup
 
-def get_requiremets()-> List[str]:
-    with open(requirements_path, "r") as f:
-        requirements = f.readlines()
-        requirements=[req.replace("\n","") for req in requirements]
-        
-        if Hyphen_e_dot  in requirements:
-            requirements.remove(Hyphen_e_dot)
-            
+REQUIREMENTS_PATH = "requirements.txt"
+HYPHEN_E_DOT = "-e ."
+
+
+def get_requirements() -> List[str]:
+    with open(REQUIREMENTS_PATH, "r") as f:
+        requirements = [req.strip() for req in f.readlines()]
+
+        if HYPHEN_E_DOT in requirements:
+            requirements.remove(HYPHEN_E_DOT)
+
         return requirements
 
 
-project_name = "ML_Modular Project"
-version = "1.0"
-description = "Learning Modular Coding"
+PROJECT_NAME = "delivery-time-prediction"
+VERSION = "1.0.0"
+DESCRIPTION = "A modular, production-style ML pipeline that predicts food delivery times."
 
-author = "Mohaiminul Islam"
-author_email="imniloy11@gmail.com"
+AUTHOR = "Mohaiminul Islam"
+AUTHOR_EMAIL = "imniloy11@gmail.com"
 
-setup(name=project_name,
-      version= version,
-      description= description,
-      author= author,
-      author_email=author_email,
-      packages= find_packages(),
-      install_requires=get_requiremets(),
-     )
-
-
+setup(
+    name=PROJECT_NAME,
+    version=VERSION,
+    description=DESCRIPTION,
+    author=AUTHOR,
+    author_email=AUTHOR_EMAIL,
+    packages=find_packages(),
+    install_requires=get_requirements(),
+)
 

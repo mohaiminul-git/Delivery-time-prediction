@@ -1,17 +1,22 @@
 import logging
-import os, sys
-from datetime import datetime  
+import os
+from datetime import datetime
 
-log_dir= "logs"
-log_dir= os.path.join(os.getcwd(), log_dir)
+LOG_DIR = os.path.join(os.getcwd(), "logs")
+os.makedirs(LOG_DIR, exist_ok=True)
 
-os.makedirs(log_dir, exist_ok=True)
+CURRENT_TIME_STAMP = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
+LOG_FILE_NAME = f"log_{CURRENT_TIME_STAMP}.log"
+LOG_FILE_PATH = os.path.join(LOG_DIR, LOG_FILE_NAME)
 
-current_time_stamp = f"{datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}"
-file_name = f"log_{current_time_stamp}.log"
-log_file=os.path.join(log_dir,file_name)
+# Create the file up front: logging.basicConfig() below is a no-op if a root
+# handler is already configured (e.g. by pytest), which would otherwise leave
+# no file on disk even though the module loaded successfully.
+open(LOG_FILE_PATH, "a").close()
 
-logging.basicConfig(filename=log_file,
-                    filemode="w",
-                    format= '%(asctime)s :: %(levelname)s :: %(message)s',
-                    level=logging.INFO)    
+logging.basicConfig(
+    filename=LOG_FILE_PATH,
+    filemode="w",
+    format="%(asctime)s :: %(levelname)s :: %(message)s",
+    level=logging.INFO,
+)

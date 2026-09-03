@@ -1,18 +1,21 @@
-from src.Config.configuration import *
-from src.Constants import *
+from src.components.data_ingestion import DataIngestion
+from src.components.data_transformation import DataTransformation
+from src.components.model_trainer import ModelTrainer
 from src.logger import logging
-import os,sys
-from src.Components.data_transformation import  Data_transformation
-from src.Components.model_trainer import Model_trainer
-from src.Components.data_ingestion import Data_Ingestion
-class Train:
-    def __init__(self):
-        self.c=0
-        print(f"****************{self.c}*******************")
-    def main(self):
-        obj= Data_Ingestion()
-        train_data,test_data = obj.initiate_data_ingestion()
-        data_transformation= Data_transformation()
-        train_arr,test_arr,process=data_transformation.initiate_data_transformation(train_data,test_data)
-        model_trainer=Model_trainer()
-        model_trainer.initiate_model_training(train_arr, test_arr)
+
+
+class TrainingPipeline:
+    def run(self):
+        logging.info("Training pipeline started")
+
+        data_ingestion = DataIngestion()
+        train_data_path, test_data_path = data_ingestion.initiate_data_ingestion()
+
+        data_transformation = DataTransformation()
+        train_arr, test_arr, _ = data_transformation.initiate_data_transformation(train_data_path, test_data_path)
+
+        model_trainer = ModelTrainer()
+        best_model_name, best_model_score = model_trainer.initiate_model_training(train_arr, test_arr)
+
+        logging.info("Training pipeline completed")
+        return best_model_name, best_model_score

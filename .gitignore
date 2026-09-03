@@ -169,4 +169,17 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
-Artifacts/model_trainer/trained_model.pkl
+
+# Project-specific: generated pipeline outputs, never hand-authored
+artifacts/
+logs/
+data/train_data.csv
+data/test_data.csv
+*.pkl
+
+# Batch prediction outputs
+batch_prediction/predictions.csv
+
+# Editors
+.vscode/
+.idea/

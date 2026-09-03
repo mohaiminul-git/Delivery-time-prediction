@@ -1,6 +1,7 @@
-pandas
-numpy
-scikit-learn
-xgboost
-streamlit
+pandas>=1.5
+numpy>=1.23
+scikit-learn>=1.2
+xgboost>=1.7
+streamlit>=1.28
+PyYAML>=6.0
 -e .
