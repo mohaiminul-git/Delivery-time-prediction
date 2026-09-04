@@ -6,12 +6,16 @@ from src.config.configuration import (
     MODEL_TRAINER_PATH,
     PREPROCESSING_OBJ_PATH,
 )
+from src.constants import TARGET_COLUMN
 from src.utils import load_model
 
 preprocessor = load_model(PREPROCESSING_OBJ_PATH)
 model = load_model(MODEL_TRAINER_PATH)
 
 st.title("Delivery Time Prediction App 🚀")
+
+single_tab, batch_tab = st.tabs(["Single Prediction", "Batch Prediction"])
+
 st.sidebar.header("Enter Delivery Details")
 
 df = pd.read_csv(FEATURE_ENGINEERED_TRAIN_DATA_PATH)
@@ -59,10 +63,43 @@ input_data = pd.DataFrame({
     "distance": [distance],
 })
 
-if st.button("Predict Delivery Time"):
-    try:
-        data_scaled = preprocessor.transform(input_data)
-        prediction = model.predict(data_scaled)
-        st.success(f"Estimated Delivery Time: {round(prediction[0], 2)} minutes ⏳")
-    except Exception as e:
-        st.error(f"Error: {e}")
+with single_tab:
+    if st.button("Predict Delivery Time"):
+        try:
+            data_scaled = preprocessor.transform(input_data)
+            prediction = model.predict(data_scaled)
+            st.success(f"Estimated Delivery Time: {round(prediction[0], 2)} minutes ⏳")
+        except Exception as e:
+            st.error(f"Error: {e}")
+
+with batch_tab:
+    st.write(
+        "Upload a CSV of feature-engineered delivery records (same columns as "
+        "`artifacts/data_transformation/feature_engineered_data/test.csv` — the "
+        f"`{TARGET_COLUMN}` column is optional and ignored if present)."
+    )
+    uploaded_file = st.file_uploader("Upload CSV", type="csv")
+
+    if uploaded_file is not None:
+        batch_df = pd.read_csv(uploaded_file)
+        batch_features = batch_df.drop(columns=[TARGET_COLUMN], errors="ignore")
+
+        if st.button("Run Batch Prediction"):
+            try:
+                batch_scaled = preprocessor.transform(batch_features)
+                batch_predictions = model.predict(batch_scaled)
+
+                result_df = batch_features.copy()
+                result_df["predicted_delivery_time"] = batch_predictions
+
+                st.success(f"Predicted delivery times for {len(result_df)} rows.")
+                st.dataframe(result_df)
+
+                st.download_button(
+                    "Download predictions as CSV",
+                    data=result_df.to_csv(index=False).encode("utf-8"),
+                    file_name="predictions.csv",
+                    mime="text/csv",
+                )
+            except Exception as e:
+                st.error(f"Error: {e}")
