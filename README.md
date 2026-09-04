@@ -1,7 +1,4 @@
 
-
-https://github.com/user-attachments/assets/ad5d02b6-3fe1-48e4-a188-f8261245e259
-
 # 📦 Delivery Time Prediction
 
 A modular, production-style machine learning pipeline that predicts food delivery times from order,
@@ -21,7 +18,7 @@ interactive **Streamlit** app with both single-record and batch prediction modes
 > **[Demo recording goes here]** — a short screen recording of both the single-record sidebar flow and
 > the CSV batch-upload flow. See the note at the bottom of this README for how it gets added.
 
-![App Preview](app_preview.png)
+https://github.com/user-attachments/assets/ad5d02b6-3fe1-48e4-a188-f8261245e259
 
 ---
 
