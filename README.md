@@ -96,25 +96,6 @@ moduler-project/
     └── utils/                  # save/load model, YAML loading, schema validation, R² scoring
 ```
 
----
-
-## 🏷️ Naming Convention
-
-This project follows [PEP 8](https://peps.python.org/pep-0008/) throughout:
-
-| Element                       | Convention          | Example                                        |
-|-------------------------------|----------------------|-------------------------------------------------|
-| Packages / modules / folders  | `snake_case`         | `src/components`, `data_ingestion.py`           |
-| Classes                        | `PascalCase`         | `DataIngestion`, `CustomException`              |
-| Functions / variables          | `snake_case`         | `initiate_data_ingestion`, `train_data_path`    |
-| Module-level constants          | `UPPER_SNAKE_CASE`   | `TARGET_COLUMN`, `RAW_DATA_PATH`                |
-
-Two intentional exceptions: `CustomData`'s constructor arguments and the feature/config lists inside
-`data_transformation.py` keep the raw dataset's original column spelling (e.g. `Time_Orderd`,
-`Delivery_person_ID`) so the code stays a direct, greppable match for the CSV headers it reads.
-
----
-
 ## 🛠️ How to Run
 
 Dependencies and the virtual environment are managed with [uv](https://docs.astral.sh/uv/); everything
@@ -211,20 +192,6 @@ being designed in from the start:
 - **uv** — dependency management and packaging
 
 ---
-
-## 🗺️ Roadmap
-
-Documented direction for where this project goes next (not yet implemented):
-
-- **FastAPI backend** — split model-serving out from the Streamlit UI into a standalone API, so the
-  model can be called independently of the app and loaded once at process startup instead of per script
-  rerun.
-- **Docker / Docker Compose** — containerize the API and the Streamlit frontend as separate services.
-- **DVC** — version the dataset and trained model artifacts outside of git, with a declarative
-  `dvc.yaml` pipeline instead of the current timestamp-folder convention.
-
----
-
 ## 📝 License
 
 This project is licensed under the [Apache 2.0 License](LICENSE).
